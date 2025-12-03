@@ -1,25 +1,25 @@
 ﻿using Godot;
 
-namespace Nullun.Resource.Scripts;
+namespace Nullun.Scripts;
 
 public partial class NullunObject : Node2D
 {
     public override void _Ready()
     {
-        base._Ready();
         InitContent();
     }
-    private void InitContent()
+    
+    protected virtual void InitContent()
     {
         Declare();
-        Invoke();
+        Event();
     }
 
     protected virtual void Declare()
     {
     }
 
-    protected virtual void Invoke()
+    protected virtual void Event()
     {
     }
 }
