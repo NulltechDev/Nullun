@@ -19,7 +19,7 @@ public partial class Menu : NullunObject
 		base.Declare();
 		try
 		{
-			StartButton = GetNodeOrNull<Button>("StartButton");
+			StartButton = GetNode<Button>("StartButton");
 		}
 		catch (InvalidOperationException @exception)
 		{
