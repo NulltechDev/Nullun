@@ -1,29 +1,48 @@
 using System;
 using Godot;
 
-namespace Nullun.Resource.Scripts;
+namespace Nullun.Scripts;
 
 public partial class Main : NullunObject
 {
-	protected static Node2D Menu;
-	public override void _Ready()
+	private static Menu _menu;
+	private static SongList _songList;
+
+	protected override void InitContent()
 	{
-	}
-	
-	public override void _Process(double delta)
-	{
+		base.InitContent();
+		Clear();
+		_menu.Show();
 	}
 
 	protected override void Declare()
 	{
 		base.Declare();
-		try
+		_menu = GetNode<Menu>("Menu");
+		_songList = GetNode<SongList>("SongList");
+	}
+
+	protected override void Event()
+	{
+		base.Event();
+		_menu.Start += MenuOnStart;
+	}
+
+	private void MenuOnStart(object sender, EventArgs e)
+	{
+		Clear();
+		_songList.Show();
+	}
+	
+	/// <summary>
+	/// 清屏
+	/// </summary>
+	private void Clear()
+	{
+		foreach (var node in GetChildren())
 		{
-			Menu = GetNode<Node2D>("Menu");
-		}
-		catch (InvalidOperationException @exception)
-		{
-			Console.Error.WriteLine(@exception.Message);
+			if(node is Node2D node2D)
+				node2D.Hide();
 		}
 	}
 }

@@ -8,3 +8,4 @@ script = ExtResource("1_h41sj")
 [node name="StartButton" type="Button" parent="."]
 offset_right = 8.0
 offset_bottom = 8.0
+text = "Start"

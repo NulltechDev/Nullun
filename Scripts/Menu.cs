@@ -1,29 +1,28 @@
 using System;
 using Godot;
 
-namespace Nullun.Resource.Scripts;
+namespace Nullun.Scripts;
 
 public partial class Menu : NullunObject
 {
-	protected static Button StartButton;
-	public override void _Ready()
-	{
-	}
-	
-	public override void _Process(double delta)
-	{
-	}
+	private static Button _startButton;
+	public delegate void MenuEventHandler(object sender,EventArgs e);
+	public event MenuEventHandler Start;
 
 	protected override void Declare()
 	{
 		base.Declare();
-		try
-		{
-			StartButton = GetNode<Button>("StartButton");
-		}
-		catch (InvalidOperationException @exception)
-		{
-			Console.WriteLine(@exception);
-		}
+		_startButton = GetNode<Button>("StartButton");
+	}
+
+	protected override void Event()
+	{
+		base.Event();
+		_startButton.Pressed += StartButtonOnPressed;
+	}
+
+	private void StartButtonOnPressed()
+	{
+		Start?.Invoke(null, EventArgs.Empty);
 	}
 }
