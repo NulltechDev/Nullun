@@ -1,5 +1,6 @@
 using System;
 using Godot;
+using Json = Nullun.Scripts.Utils.Json;
 
 namespace Nullun.Scripts;
 
