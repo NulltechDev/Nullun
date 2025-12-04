@@ -12,13 +12,14 @@
     <EmbeddedResource Remove="Scripts\Chart\**" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Chart\TestChart.json" />
+    <Content Include="Scenes\Gameplay.tscn" />
     <Content Include="Scenes\Main.tscn" />
     <Content Include="Scenes\Menu.tscn" />
     <Content Include="Scenes\SongList.tscn" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Assets\" />
-    <Folder Include="Chart\" />
     <Folder Include="Resource\" />
   </ItemGroup>
   <ItemGroup>

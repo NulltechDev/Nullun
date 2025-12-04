@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://blx7ioe3j0fr8"]
+
+[ext_resource type="Script" path="res://Scripts/ChartInfo.cs" id="1_kanq1"]
+
+[node name="ChartInfo" type="Node2D"]
+script = ExtResource("1_kanq1")
