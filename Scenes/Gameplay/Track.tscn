@@ -1,0 +1,11 @@
+[gd_scene load_steps=3 format=3 uid="uid://ds5ugt6tkajff"]
+
+[ext_resource type="Script" path="res://Scripts/Track.cs" id="1_kkagq"]
+[ext_resource type="Script" path="res://Scripts/TrackRender.cs" id="2_6kctg"]
+
+[node name="Track" type="Node2D"]
+clip_children = 1
+script = ExtResource("1_kkagq")
+
+[node name="TrackRender" type="Node2D" parent="."]
+script = ExtResource("2_6kctg")

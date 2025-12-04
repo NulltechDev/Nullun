@@ -1,3 +1,6 @@
-[gd_scene format=3 uid="uid://yc7xa3c35y7n"]
+[gd_scene load_steps=2 format=3 uid="uid://yc7xa3c35y7n"]
+
+[ext_resource type="Script" path="res://Scripts/Data/Glide.cs" id="1_887id"]
 
 [node name="Glide" type="Node2D"]
+script = ExtResource("1_887id")

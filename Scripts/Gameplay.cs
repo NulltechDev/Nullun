@@ -10,6 +10,8 @@ namespace Nullun.Scripts;
 
 public partial class Gameplay : NullunObject
 {
+	private Track _track;
+	
 	private List<Note> _notes =  new();
 	private List<Hold> _holds = new();
 	private List<Glide> _glides = new();
@@ -27,19 +29,22 @@ public partial class Gameplay : NullunObject
 	
 	private float DeltaPerTicks {get; set;}
 	private List<BpmChange> BpmChanges { get; set; } = new();
-	private Stopwatch CurrentTime {get; set;}
+	private Stopwatch Timer { get; set; }
 
-	private int BeatAccuracy { get; } = 100;
+	private static int BeatAccuracy => 100;
 
 	private bool IsPlaying
 	{
 		get => ProcessMode != ProcessModeEnum.Disabled;
 		set => ProcessMode = value ? ProcessModeEnum.Pausable : ProcessModeEnum.Disabled;
 	}
-
+	
 	protected override void Declare()
 	{
 		base.Declare();
+		_track = GetNode<Track>("Track");
+		if (_track == null) throw new Exception("Track not found");
+		
 		_noteScene = (PackedScene)GD.Load("res://Scenes/Gameplay/Note.tscn");
 		if(_noteScene == null) throw new Exception("Could not find Note Scene");
 		_holdScene = (PackedScene)GD.Load("res://Scenes/Gameplay/Hold.tscn");
@@ -50,18 +55,29 @@ public partial class Gameplay : NullunObject
 		if(_flickScene == null) throw new Exception("Could not find Flick Scene");
 	}
 
-	private void Start()
+	public override void _Ready()
 	{
-		if (!LoadChart("Chart/TestChart.json", 0)) return;
-		Play();
-		CurrentTime = Stopwatch.StartNew();
+		base._Ready();
+		Start();
 	}
 
-	private bool LoadChart(string filename,int difficulty)
+	private void Start()
+	{
+		_track.Position = GetWindow().Size / 2;
+		if (!LoadChart("Chart/TestChart.json", 0)) return;
+		Play();
+		if(Timer == null) throw new Exception("Initial failed: Could not find Timer");
+	}
+
+	private bool LoadChart(string filename,int level)
 	{
 		ChartData data = Json.Load<ChartData>(filename);
 		MetaData meta = data.Meta;
-		ChartItem chart = data.Items[difficulty];
+		ChartItem chart = null;
+		foreach (var c in data.Chart)
+			if (c.Level == level)
+				chart = c;
+		if (chart == null) throw new Exception("Chart not found");
 		InitBpm(meta);
 		try
 		{
@@ -77,6 +93,7 @@ public partial class Gameplay : NullunObject
 				_glides.Add(LoadGlide(glide));
 			foreach (var flick in chart.Flick)
 				_flicks.Add(LoadFlick(flick));
+			_track.Load(_notes,_holds,_glides,_flicks);
 		}
 		catch (Exception e)
 		{
@@ -89,6 +106,7 @@ public partial class Gameplay : NullunObject
 	private void Play()
 	{
 		IsPlaying = true;
+		Timer = Stopwatch.StartNew();
 	}
 
 	private Note LoadNote(Note note = null)
@@ -142,9 +160,9 @@ public partial class Gameplay : NullunObject
 		foreach (var change in BpmChanges.Where(change => ((int)(change.Time * BeatAccuracy)).Equals(GetBeat())))
 			DeltaPerTicks = 60000f / change.Bpm;
 	}
-
+	
 	private int GetBeat()
 	{
-		return (int)(CurrentTime.ElapsedMilliseconds / DeltaPerTicks * BeatAccuracy);
+		return (int)(Timer.ElapsedMilliseconds / DeltaPerTicks * BeatAccuracy);
 	}
 }

@@ -23,7 +23,7 @@ public class MetaData
 
 public class ChartItem
 {
-    public string Difficulty { get; set; }
+    public int Difficulty { get; set; }
     public int Level { get; set; }
     public List<Note> Note { get; set; }
     public List<Hold> Hold { get; set; }
@@ -33,5 +33,5 @@ public class ChartItem
 public class ChartData
 {
     public MetaData Meta { get; set; }
-    public List<ChartItem> Items { get; set; }
+    public List<ChartItem> Chart { get; set; }
 }

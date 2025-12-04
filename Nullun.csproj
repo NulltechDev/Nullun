@@ -4,6 +4,7 @@
     <TargetFramework Condition=" '$(GodotTargetPlatform)' == 'android' ">net7.0</TargetFramework>
     <TargetFramework Condition=" '$(GodotTargetPlatform)' == 'ios' ">net8.0</TargetFramework>
     <EnableDynamicLoading>true</EnableDynamicLoading>
+    <LangVersion>12</LangVersion>
   </PropertyGroup>
   <ItemGroup>
     <Compile Remove="Scripts\Chart\**" />
@@ -13,7 +14,12 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Chart\TestChart.json" />
+    <Content Include="Scenes\ChartInfo.tscn" />
     <Content Include="Scenes\Gameplay.tscn" />
+    <Content Include="Scenes\Gameplay\Flick.tscn" />
+    <Content Include="Scenes\Gameplay\Glide.tscn" />
+    <Content Include="Scenes\Gameplay\Hold.tscn" />
+    <Content Include="Scenes\Gameplay\Note.tscn" />
     <Content Include="Scenes\Main.tscn" />
     <Content Include="Scenes\Menu.tscn" />
     <Content Include="Scenes\SongList.tscn" />
