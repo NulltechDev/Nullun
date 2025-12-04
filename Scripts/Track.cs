@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using Godot;
 using Nullun.Scripts.Data;
 
@@ -32,8 +33,9 @@ public partial class Track : NullunObject
     public List<Glide> Glides { get; set; } = new();
     public List<Flick> Flicks { get; set; } = new();
 
-    public float Offset { get; set; }
-    public float Speed { get; set; } = 40;
+    public float Offset => Settings.Instance.Offset;
+    public float Speed => Settings.Instance.Speed;
+    public float Progress;
 
     public override void _Process(double delta)
     {
@@ -75,5 +77,9 @@ public partial class Track : NullunObject
         }
     }
 
+    public void SetProgress(float progress)
+    {
+        Progress = progress;
+    }
     
 }

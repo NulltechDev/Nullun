@@ -2,7 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using Godot;
+using NAudio.Wave;
 using Nullun.Scripts.Data;
 using Json = Nullun.Scripts.Utils.Json;
 
@@ -12,10 +15,10 @@ public partial class Gameplay : NullunObject
 {
 	private Track _track;
 	
-	private List<Note> _notes =  new();
-	private List<Hold> _holds = new();
-	private List<Glide> _glides = new();
-	private List<Flick> _flicks = new();
+	private readonly List<Note> _notes = [];
+	private readonly List<Hold> _holds = [];
+	private readonly List<Glide> _glides = [];
+	private readonly List<Flick> _flicks = [];
 	
 	private Note _note;
 	private Hold _hold;
@@ -28,8 +31,10 @@ public partial class Gameplay : NullunObject
 	private PackedScene _flickScene;
 	
 	private float DeltaPerTicks {get; set;}
-	private List<BpmChange> BpmChanges { get; set; } = new();
+	private List<BpmChange> BpmChanges { get; set; } = [];
 	private Stopwatch Timer { get; set; }
+	private float Progress { get; set; }
+	private float PreStart => Settings.Instance.PreStart;
 
 	private static int BeatAccuracy => 100;
 
@@ -64,21 +69,37 @@ public partial class Gameplay : NullunObject
 	private void Start()
 	{
 		_track.Position = GetWindow().Size / 2;
-		if (!LoadChart("Chart/TestChart.json", 0)) return;
+		if (!LoadChart("TestChart", 0)) return;
 		Play();
 		if(Timer == null) throw new Exception("Initial failed: Could not find Timer");
+	}
+	
+	private void Play()
+	{
+		IsPlaying = true;
+		Progress = -PreStart;
+		Timer = Stopwatch.StartNew();
+	}
+
+	public override void _Process(double delta)
+	{
+		base._Process(delta);
+		Progress = GetBeat() - PreStart;
+		_track.SetProgress(Progress);
 	}
 
 	private bool LoadChart(string filename,int level)
 	{
-		ChartData data = Json.Load<ChartData>(filename);
+		ChartData data = Json.Load<ChartData>($"Chart/{filename}/Chart.json");
 		MetaData meta = data.Meta;
 		ChartItem chart = null;
 		foreach (var c in data.Chart)
 			if (c.Level == level)
 				chart = c;
 		if (chart == null) throw new Exception("Chart not found");
+		AudioFileReader audio = new AudioFileReader($"Chart/{filename}/Audio.wav");
 		InitBpm(meta);
+		InitAudio(audio);
 		try
 		{
 			_notes.Clear();
@@ -101,12 +122,6 @@ public partial class Gameplay : NullunObject
 			return false;
 		}
 		return true;
-	}
-
-	private void Play()
-	{
-		IsPlaying = true;
-		Timer = Stopwatch.StartNew();
 	}
 
 	private Note LoadNote(Note note = null)
@@ -157,12 +172,33 @@ public partial class Gameplay : NullunObject
 
 	private void MonitorBpmChanges()
 	{
-		foreach (var change in BpmChanges.Where(change => ((int)(change.Time * BeatAccuracy)).Equals(GetBeat())))
+		foreach (var change in BpmChanges.Where(change => BeatEqual(change.Time, GetBeat())))
 			DeltaPerTicks = 60000f / change.Bpm;
 	}
-	
-	private int GetBeat()
+
+	private void InitAudio(AudioFileReader audio)
 	{
-		return (int)(Timer.ElapsedMilliseconds / DeltaPerTicks * BeatAccuracy);
+		
+		var output = new WaveOutEvent();
+		output.Init(audio);
+		new Task(async void () =>
+		{
+			
+			while (Timer == null) await Task.Delay(1);
+			while (!BeatEqual(GetBeat(), PreStart))
+				await Task.Delay(1);
+			output.Play();
+			GD.Print("Audio Init");
+		}).Start();
+	}
+	
+	private float GetBeat()
+	{
+		return Timer.ElapsedMilliseconds / DeltaPerTicks;
+	}
+
+	private bool BeatEqual(float t1, float t2)
+	{
+		return ((int)(t1 * BeatAccuracy)).Equals((int)(t2 * BeatAccuracy));
 	}
 }

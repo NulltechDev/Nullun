@@ -27,6 +27,7 @@ public partial class TrackRender : NullunObject
 
     private float Offset => _parent.Offset;
     private float Speed => _parent.Speed;
+    private float Progress => _parent.Progress;
 
     public override void _Process(double delta)
     {
@@ -50,12 +51,35 @@ public partial class TrackRender : NullunObject
     private void RenderItems()
     {
         foreach (var note in Notes)
-            DrawRect(new Rect2(note.Track * TrackWidth - TrackWidth * 2,TrackHeight/2f - note.Time * Speed, TrackWidth, -4), NoteColor);
+            DrawNote(note,Progress);
         foreach (var hold in Holds)
-            DrawRect(new Rect2(hold.Track*TrackWidth - TrackWidth * 2,TrackHeight/2f - hold.Time * Speed,TrackWidth,hold.Duration * Speed),HoldColor);
+            DrawHold(hold,Progress);
         foreach (var glide in Glides)
-            DrawRect(new Rect2(glide.Track*TrackWidth - TrackWidth * 2,TrackHeight/2f - glide.Time * Speed,TrackWidth,-4),GlideColor);
+            DrawGlide(glide,Progress);
         // foreach (var flick in Flicks)
         //     throw new NotImplementedException();
+    }
+
+    private void DrawNote(Note note, float progress)
+    {
+        DrawRect(
+            new Rect2(note.Track * TrackWidth - TrackWidth * 2, TrackHeight / 2f - (note.Time - progress) * Speed,
+                TrackWidth, -4), NoteColor);
+    }
+
+    private void DrawHold(Hold hold, float progress)
+    {
+        DrawRect(
+            new Rect2(hold.Track * TrackWidth - TrackWidth * 2, TrackHeight / 2f - (hold.Time - progress) * Speed,
+                TrackWidth,
+                hold.Duration * Speed), HoldColor);
+    }
+
+    private void DrawGlide(Glide glide, float progress)
+    {
+        DrawRect(
+            new Rect2(glide.Track * TrackWidth - TrackWidth * 2, TrackHeight / 2f - (glide.Time - progress) * Speed,
+                TrackWidth, -4),
+            GlideColor);
     }
 }
