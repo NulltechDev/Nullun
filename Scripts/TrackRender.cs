@@ -12,12 +12,17 @@ public partial class TrackRender : NullunObject
     private int TrackWidth => _parent.TrackWidth;
     private int TrackHeight => _parent.TrackHeight;
     private Rect2[] TrackRects => _parent.TrackRects;
+    private Rect2[] FlickTrackRects => _parent.FlickTrackRects;
+    private Color FlickTrackColor1 => _parent.FlickTrackColor1;
+    private Color FlickTrackColor2 => _parent.FlickTrackColor2;
 
     private Color TrackColor => _parent.TrackColor;
     private Color NoteColor => _parent.NoteColor;
     private Color HoldColor => _parent.HoldColor;
     private Color GlideColor => _parent.GlideColor;
     private Color FlickColor => _parent.FlickColor;
+    
+    private Color _gridColor = Color.FromHsv(0,0,1,.2f);
 
 
     private List<Note> Notes => _parent.Notes;
@@ -28,6 +33,8 @@ public partial class TrackRender : NullunObject
     private float Offset => _parent.Offset;
     private float Speed => _parent.Speed;
     private float Progress => _parent.Progress;
+    private float PreStart => _parent.PreStart;
+    private float TotalTime => _parent.TotalTime;
 
     public override void _Process(double delta)
     {
@@ -44,10 +51,19 @@ public partial class TrackRender : NullunObject
     public override void _Draw()
     {
         base._Draw();
-        foreach (var trackRect in TrackRects)
-            DrawRect(trackRect,TrackColor,false);
+        DrawGrid(TotalTime);
+        DrawTrack();
         RenderItems();
     }
+
+    private void DrawTrack()
+    {
+        foreach (var trackRect in TrackRects)
+            DrawRect(trackRect,TrackColor,false);
+        DrawRect(FlickTrackRects[0],FlickTrackColor1,false);
+        DrawRect(FlickTrackRects[1],FlickTrackColor2,false);
+    }
+
     private void RenderItems()
     {
         foreach (var note in Notes)
@@ -56,8 +72,17 @@ public partial class TrackRender : NullunObject
             DrawHold(hold,Progress);
         foreach (var glide in Glides)
             DrawGlide(glide,Progress);
-        // foreach (var flick in Flicks)
-        //     throw new NotImplementedException();
+        foreach (var flick in Flicks)
+            DrawFlick(flick,Progress);
+    }
+
+    private void DrawGrid(float totalTime)
+    {
+        for (int i = -(int)PreStart; i < totalTime; i++)
+        {
+            DrawLine(new Vector2(-2*TrackWidth,TrackHeight / 2f - (i - Progress) * Speed),
+                new Vector2(2*TrackWidth,TrackHeight / 2f - (i - Progress) * Speed),_gridColor);
+        }
     }
 
     private void DrawNote(Note note, float progress)
@@ -81,5 +106,24 @@ public partial class TrackRender : NullunObject
             new Rect2(glide.Track * TrackWidth - TrackWidth * 2, TrackHeight / 2f - (glide.Time - progress) * Speed,
                 TrackWidth, -4),
             GlideColor);
+    }
+
+    private void DrawFlick(Flick flick, float progress)
+    {
+        switch (flick.Track)
+        {
+            case 0:
+                DrawRect(
+                    new Rect2(-TrackWidth - TrackWidth * 2, TrackHeight / 2f - (flick.Time - progress) * Speed,
+                        TrackWidth, -4),
+                    FlickColor);
+                break;
+            case 1:
+                DrawRect(
+                    new Rect2(4*TrackWidth - TrackWidth * 2, TrackHeight / 2f - (flick.Time - progress) * Speed,
+                        TrackWidth, -4),
+                    FlickColor);
+                break;
+        }
     }
 }

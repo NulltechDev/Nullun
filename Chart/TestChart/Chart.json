@@ -8,7 +8,7 @@
     "offset": 0,
     "audio": "TODO",
     "background": "TODO",
-    "totalTime": 20
+    "totalTime": 28
   },
   "chart": [
     {
@@ -45,8 +45,8 @@
         {"time": 7, "track": 2}
       ],
       "flick": [
-        {"time": 6, "track": 1, "direction": 0, "length": 1},
-        {"time": 8, "track": 2, "direction": 1, "length": 2}
+        {"time": 6, "track": 0, "direction": 0, "length": 1},
+        {"time": 8, "track": 1, "direction": 1, "length": 2}
       ]
     }
   ]

@@ -6,7 +6,6 @@ using Nullun.Scripts.Data;
 
 namespace Nullun.Scripts;
 
-[Tool]
 public partial class Track : NullunObject
 {
     public int TrackWidth => 50;
@@ -20,7 +19,15 @@ public partial class Track : NullunObject
         new(TrackWidth,-TrackHeight/2f,TrackWidth,TrackHeight)
     ];
 
-
+    public Rect2[] FlickTrackRects =>
+    [
+        new(-3*TrackWidth,-TrackHeight/2f,TrackWidth,TrackHeight),
+        new(2*TrackWidth,-TrackHeight/2f,TrackWidth,TrackHeight),
+    ];
+    
+    public Color FlickTrackColor1 => Color.FromHsv(175/360f,1,1);
+    public Color FlickTrackColor2 => Color.FromHsv(330/360f,1,1);
+    
     public Color TrackColor => Color.FromHsv(0, 0, 1);
     public Color NoteColor => Color.FromHsv(.5f, 1, 1);
     public Color HoldColor => Color.FromHsv(.2f, 1, 1);
@@ -36,6 +43,8 @@ public partial class Track : NullunObject
     public float Offset => Settings.Instance.Offset;
     public float Speed => Settings.Instance.Speed;
     public float Progress;
+    public float PreStart;
+    public float TotalTime;
 
     public override void _Process(double delta)
     {
@@ -46,7 +55,7 @@ public partial class Track : NullunObject
     public override void _Draw()
     {
         base._Draw();
-        DrawRect(new Rect2(-2*TrackWidth-1,-TrackHeight/2f-1,TrackWidth*4+1,TrackHeight+1),Colors.White);
+        DrawRect(new Rect2(-3*TrackWidth-1,-TrackHeight/2f-1,TrackWidth*6+1,TrackHeight+1),Colors.White);
     }
 
     public void Load(params IEnumerable<object>[] lists)
@@ -81,5 +90,14 @@ public partial class Track : NullunObject
     {
         Progress = progress;
     }
-    
+
+    public void SetTotalTime(float totalTime)
+    {
+        TotalTime = totalTime;
+    }
+
+    public void SetPreStart(float preStart)
+    {
+        PreStart = preStart;
+    }
 }

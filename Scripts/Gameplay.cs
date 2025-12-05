@@ -35,6 +35,7 @@ public partial class Gameplay : NullunObject
 	private Stopwatch Timer { get; set; }
 	private float Progress { get; set; }
 	private float PreStart => Settings.Instance.PreStart;
+	private float TotalTime { get; set; }
 
 	private static int BeatAccuracy => 100;
 
@@ -97,6 +98,8 @@ public partial class Gameplay : NullunObject
 			if (c.Level == level)
 				chart = c;
 		if (chart == null) throw new Exception("Chart not found");
+		TotalTime = PreStart + meta.TotalTime;
+		InitTrack();
 		AudioFileReader audio = new AudioFileReader($"Chart/{filename}/Audio.wav");
 		InitBpm(meta);
 		InitAudio(audio);
@@ -122,6 +125,12 @@ public partial class Gameplay : NullunObject
 			return false;
 		}
 		return true;
+	}
+
+	private void InitTrack()
+	{
+		_track.SetTotalTime(TotalTime);
+		_track.SetPreStart(PreStart);
 	}
 
 	private Note LoadNote(Note note = null)

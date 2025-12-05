@@ -8,10 +8,14 @@ public partial class Main : NullunObject
 {
 	private static Menu _menu;
 	private static SongList _songList;
+	private static ColorRect _background;
 
 	protected override void InitContent()
 	{
 		base.InitContent();
+		_background.Size = GetWindow().Size;
+		_menu.Position = GetWindow().Size / 2;
+		_songList.Position = GetWindow().Size / 2;
 		Clear();
 		_menu.Show();
 	}
@@ -21,6 +25,7 @@ public partial class Main : NullunObject
 		base.Declare();
 		_menu = GetNode<Menu>("Menu");
 		_songList = GetNode<SongList>("SongList");
+		_background = GetNode<ColorRect>("ColorRect");
 	}
 
 	protected override void Event()
