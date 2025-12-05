@@ -1,0 +1,133 @@
+[gd_scene load_steps=10 format=3 uid="uid://evpw5smp1pgy"]
+
+[ext_resource type="Texture2D" uid="uid://ieqbfv2um0tt" path="res://Assets/Graphics/NULLTECH_LOGO.png" id="1_4fv48"]
+[ext_resource type="Script" path="res://Scripts/Logo/logo.gd" id="1_7re4l"]
+[ext_resource type="Shader" path="res://Resource/Shader/dissolve.gdshader" id="2_7pob0"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_lg15a"]
+noise_type = 3
+frequency = 0.0355
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_oaawo"]
+noise = SubResource("FastNoiseLite_lg15a")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_wwjq7"]
+shader = ExtResource("2_7pob0")
+shader_parameter/dissolve_progress = 0.0
+shader_parameter/alpha = 1.0
+shader_parameter/noise_tex = SubResource("NoiseTexture2D_oaawo")
+
+[sub_resource type="Animation" id="Animation_874eg"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("TextureRect:material:shader_parameter/dissolve_progress")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("TextureRect:material:shader_parameter/alpha")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [1.0]
+}
+
+[sub_resource type="Animation" id="Animation_jmpvy"]
+resource_name = "logo_animation"
+length = 5.0
+tracks/0/type = "method"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(5),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"on_animation_finished"
+}]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("TextureRect:material:shader_parameter/dissolve_progress")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 4, 5),
+"transitions": PackedFloat32Array(1, -2, -2),
+"update": 0,
+"values": [0.0, 0.0, 2.0]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("TextureRect:material:shader_parameter/alpha")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 1, 4, 5),
+"transitions": PackedFloat32Array(-2, -2, -2, -2),
+"update": 0,
+"values": [0.0, 1.0, 1.0, 0.0]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_xc7us"]
+_data = {
+"RESET": SubResource("Animation_874eg"),
+"logo_animation": SubResource("Animation_jmpvy")
+}
+
+[node name="Logo" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_7re4l")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TextureRect" type="TextureRect" parent="."]
+material = SubResource("ShaderMaterial_wwjq7")
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -1200.0
+offset_top = -1200.0
+offset_right = 1200.0
+offset_bottom = 1200.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.2, 0.2)
+pivot_offset = Vector2(1200, 1200)
+texture = ExtResource("1_4fv48")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_xc7us")
+}
