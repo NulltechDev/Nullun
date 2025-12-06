@@ -1,7 +1,8 @@
-[gd_scene load_steps=8 format=3 uid="uid://blx7ioe3j0fr8"]
+[gd_scene load_steps=11 format=3 uid="uid://blx7ioe3j0fr8"]
 
 [ext_resource type="Script" path="res://Scripts/ChartInfo.cs" id="1_kanq1"]
-[ext_resource type="Shader" path="res://Resource/Shader/dissolve.gdshader" id="2_1qxoe"]
+[ext_resource type="Shader" path="res://Resource/Shader/chart_info.gdshader" id="2_355qj"]
+[ext_resource type="LabelSettings" uid="uid://uk3leokxl1g1" path="res://Resource/Font/defualt_label_setting.tres" id="3_oolr0"]
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_jr71e"]
 noise_type = 3
@@ -12,18 +13,25 @@ height = 64
 noise = SubResource("FastNoiseLite_jr71e")
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_yfkpn"]
-shader = ExtResource("2_1qxoe")
-shader_parameter/dissolve_progress = 0.75
+shader = ExtResource("2_355qj")
 shader_parameter/alpha = 1.0
 shader_parameter/noise_tex = SubResource("NoiseTexture2D_c2nvc")
 
 [sub_resource type="Gradient" id="Gradient_j8gha"]
-colors = PackedColorArray(0.9, 0.675, 0.9, 1, 0.45, 0.9, 0.825, 1)
+colors = PackedColorArray(0, 0, 0, 0.0784314, 0, 0, 0, 0.196078)
 
 [sub_resource type="GradientTexture2D" id="GradientTexture2D_t4yuk"]
 gradient = SubResource("Gradient_j8gha")
 width = 512
 fill_from = Vector2(0, 1)
+
+[sub_resource type="Gradient" id="Gradient_v33vu"]
+colors = PackedColorArray(1, 1, 1, 0.392157, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_0xq3a"]
+gradient = SubResource("Gradient_v33vu")
+height = 40
+fill_from = Vector2(0.6, 0)
 
 [node name="ChartInfo" type="Node2D"]
 script = ExtResource("1_kanq1")
@@ -33,3 +41,27 @@ material = SubResource("ShaderMaterial_yfkpn")
 offset_right = 512.0
 offset_bottom = 64.0
 texture_normal = SubResource("GradientTexture2D_t4yuk")
+
+[node name="TextureRect" type="TextureRect" parent="TextureButton"]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_top = -20.0
+offset_right = 300.0
+offset_bottom = 20.0
+grow_vertical = 2
+texture = SubResource("GradientTexture2D_0xq3a")
+
+[node name="Label" type="Label" parent="TextureButton"]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 20.0
+offset_top = -14.5
+offset_right = 77.0
+offset_bottom = 14.5
+grow_vertical = 2
+text = "TEST - TEST"
+label_settings = ExtResource("3_oolr0")
