@@ -1,8 +1,0 @@
-[gd_resource type="LabelSettings" load_steps=2 format=3 uid="uid://uk3leokxl1g1"]
-
-[ext_resource type="FontFile" uid="uid://k52s5j8wobkt" path="res://Assets/Fonts/QynFlavorGroteskGB/QynFlavorGroteskGB-Regular.ttf" id="1_8b3hg"]
-
-[resource]
-font = ExtResource("1_8b3hg")
-font_size = 64
-font_color = Color(0, 0, 0, 1)

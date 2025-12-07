@@ -19,19 +19,21 @@ public partial class ChartInfo : Control
     private bool _isSelected = false;
     private string Chart { get; set; }
 
-    private int Difficulty { get; set; } = 0;
+    private int Level { get; set; } = 0;
     
-    private Color[] difficultyColors = [
+    private Color[] _levelColors = [
         Color.FromHsv(150 / 360f,0.5f,0.9f),
         Color.FromHsv(210 / 360f,0.8f,0.9f),
         Color.FromHsv(30 / 360f,1f,0.95f),
         Color.FromHsv(0 / 360f,0.9f,0.8f)
     ];
     
-    private WaveOutEvent _output = new();
-    
+    private readonly WaveOutEvent _output = new();
+    public float PosOffset;
+
     public void SetInfo(string chartDirectory)
     {
+        var charts = Json.Load<ChartData>($"{chartDirectory}/Chart.json").Chart;
         var info = Json.Load<ChartData>($"{chartDirectory}/Chart.json").Meta;
         Chart = chartDirectory;
         Title = info.Title;
@@ -39,12 +41,17 @@ public partial class ChartInfo : Control
         Bpm = info.Bpm;
         
         var difficultyColor = GetNode<ColorRect>("TextureButton/ColorRect");
-        difficultyColor.Color = difficultyColors[Difficulty];
+        difficultyColor.Color = _levelColors[Level];
         
         var titleLabel = GetNode<Label>("TextureButton/Title");
         titleLabel.Text = Title;
         var texture = GetNode<TextureRect>("TextureButton/TextureRect");
         texture.Texture = GD.Load<Texture2D>($"{chartDirectory}/Preview.jpeg");
+
+        var difficulty = GetNode<Label>("TextureButton/Difficulty");
+        foreach (var chart in charts)
+            if (chart.Level == Level)
+                difficulty.Text = $"DIFFICULTY - {chart.Difficulty}";
     }
 
     public override void _Ready()
@@ -53,6 +60,13 @@ public partial class ChartInfo : Control
         var button = GetNode<TextureButton>("TextureButton");
         button.Pressed += ButtonOnPressed;
         button.FocusExited += ButtonOnFocusExited;
+        PivotOffset = Size / 2;
+    }
+
+    public override void _Process(double delta)
+    {
+        base._Process(delta);
+        Position = new Vector2(150 - (float)Math.Sin(GetGlobalPosition().Y / GetWindow().Size.Y * Math.PI) * 150 + PosOffset, Position.Y);
     }
 
     private void ButtonOnFocusExited()
@@ -76,7 +90,8 @@ public partial class ChartInfo : Control
 
     public void Select()
     {
-        GetTree().CreateTween().TweenProperty(this, "position", new Vector2(40, Position.Y), 0.3f).SetTrans(Tween.TransitionType.Cubic);
+        GetTree().CreateTween().TweenProperty(this, "PosOffset", 100,0.2f).SetTrans(Tween.TransitionType.Sine);
+        GetTree().CreateTween().TweenProperty(this, "scale", new Vector2(1.1f,1.1f),0.2f).SetTrans(Tween.TransitionType.Sine);
         _isSelected = true;
         AudioFileReader audio = new AudioFileReader($"{Chart}/Audio.wav");
         PlayAudio(audio);
@@ -84,7 +99,8 @@ public partial class ChartInfo : Control
 
     public void Deselect()
     {
-        GetTree().CreateTween().TweenProperty(this, "position", new Vector2(0, Position.Y), 0.6f).SetTrans(Tween.TransitionType.Cubic);
+        GetTree().CreateTween().TweenProperty(this, "PosOffset", 0,0.4f).SetTrans(Tween.TransitionType.Cubic);
+        GetTree().CreateTween().TweenProperty(this, "scale", Vector2.One,0.4f).SetTrans(Tween.TransitionType.Cubic);
         _isSelected = false;
         _output.Stop();
     }
