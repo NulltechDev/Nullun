@@ -1,16 +1,8 @@
-[gd_scene load_steps=6 format=3 uid="uid://blx7ioe3j0fr8"]
+[gd_scene load_steps=4 format=3 uid="uid://blx7ioe3j0fr8"]
 
 [ext_resource type="Script" path="res://Scripts/ChartInfo.cs" id="1_kanq1"]
 [ext_resource type="Texture2D" uid="uid://cfhnh0r4cfjwl" path="res://Assets/Graphics/chart_info.png" id="3_kf0r2"]
 [ext_resource type="LabelSettings" uid="uid://uk3leokxl1g1" path="res://Resource/Font/defualt_label_setting.tres" id="3_oolr0"]
-
-[sub_resource type="Gradient" id="Gradient_v33vu"]
-colors = PackedColorArray(1, 1, 1, 0.392157, 1, 1, 1, 0)
-
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_0xq3a"]
-gradient = SubResource("Gradient_v33vu")
-height = 40
-fill_from = Vector2(0.6, 0)
 
 [node name="ChartInfo" type="Control"]
 clip_contents = true
@@ -22,31 +14,43 @@ offset_bottom = 150.0
 script = ExtResource("1_kanq1")
 
 [node name="TextureButton" type="TextureButton" parent="."]
+clip_children = 2
 layout_mode = 2
 offset_right = 1024.0
 offset_bottom = 128.0
 scale = Vector2(0.75, 0.75)
 texture_normal = ExtResource("3_kf0r2")
 
+[node name="ColorRect" type="ColorRect" parent="TextureButton"]
+layout_mode = 1
+anchors_preset = 9
+anchor_bottom = 1.0
+offset_right = 20.0
+grow_vertical = 2
+
 [node name="TextureRect" type="TextureRect" parent="TextureButton"]
 layout_mode = 1
-anchors_preset = 4
+anchors_preset = 6
+anchor_left = 1.0
 anchor_top = 0.5
+anchor_right = 1.0
 anchor_bottom = 0.5
-offset_top = -20.0
-offset_right = 300.0
-offset_bottom = 30.0
+offset_left = -600.0
+offset_top = -300.0
+offset_bottom = 300.0
+grow_horizontal = 0
 grow_vertical = 2
-texture = SubResource("GradientTexture2D_0xq3a")
+expand_mode = 2
 
 [node name="Title" type="Label" parent="TextureButton"]
 layout_mode = 1
 anchors_preset = 4
 anchor_top = 0.5
 anchor_bottom = 0.5
-offset_left = 20.0
-offset_top = -29.0
-offset_right = 130.0
-offset_bottom = 48.0
+offset_left = 40.0
+offset_top = -38.5
+offset_right = 178.0
+offset_bottom = 38.5
 grow_vertical = 2
+text = "error"
 label_settings = ExtResource("3_oolr0")

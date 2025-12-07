@@ -16,8 +16,6 @@ public class MetaData
     public float Bpm { get; set; }
     public List<BpmChange> BpmChanges { get; set; }
     public float Offset { get; set; }
-    public string Audio { get; set; }
-    public string Background { get; set; }
     public float TotalTime { get; set; }
 }
 
