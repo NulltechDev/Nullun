@@ -18,6 +18,16 @@ public partial class ChartInfo : Control
     
     private bool _isSelected = false;
     private string Chart { get; set; }
+
+    private int Difficulty { get; set; } = 0;
+    
+    private Color[] difficultyColors = [
+        Color.FromHsv(150 / 360f,0.5f,0.9f),
+        Color.FromHsv(210 / 360f,0.8f,0.9f),
+        Color.FromHsv(30 / 360f,1f,0.95f),
+        Color.FromHsv(0 / 360f,0.9f,0.8f)
+    ];
+    
     private WaveOutEvent _output = new();
     
     public void SetInfo(string chartDirectory)
@@ -27,6 +37,9 @@ public partial class ChartInfo : Control
         Title = info.Title;
         Artist = info.Artist;
         Bpm = info.Bpm;
+        
+        var difficultyColor = GetNode<ColorRect>("TextureButton/ColorRect");
+        difficultyColor.Color = difficultyColors[Difficulty];
         
         var titleLabel = GetNode<Label>("TextureButton/Title");
         titleLabel.Text = Title;
@@ -63,7 +76,7 @@ public partial class ChartInfo : Control
 
     public void Select()
     {
-        GetTree().CreateTween().TweenProperty(this, "position", new Vector2(20, Position.Y), 0.5f).SetTrans(Tween.TransitionType.Cubic);
+        GetTree().CreateTween().TweenProperty(this, "position", new Vector2(40, Position.Y), 0.3f).SetTrans(Tween.TransitionType.Cubic);
         _isSelected = true;
         AudioFileReader audio = new AudioFileReader($"{Chart}/Audio.wav");
         PlayAudio(audio);
@@ -71,7 +84,7 @@ public partial class ChartInfo : Control
 
     public void Deselect()
     {
-        GetTree().CreateTween().TweenProperty(this, "position", new Vector2(0, Position.Y), 0.5f).SetTrans(Tween.TransitionType.Cubic);
+        GetTree().CreateTween().TweenProperty(this, "position", new Vector2(0, Position.Y), 0.6f).SetTrans(Tween.TransitionType.Cubic);
         _isSelected = false;
         _output.Stop();
     }

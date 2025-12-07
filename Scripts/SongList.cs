@@ -23,7 +23,8 @@ public partial class SongList : NullunObject
     protected override void InitContent()
     {
         base.InitContent();
-        _songListScrollContainer.Size = new Vector2(600,GetWindow().Size.Y);
+        _songListScrollContainer.Size = GetWindow().Size - new Vector2(0, 80);
+        _songListScrollContainer.Position = new Vector2(40, 40);
         string chartDirectory = "Chart/";
         string[] chartFile = Directory.GetDirectories(chartDirectory);
         _songList.Clear();

@@ -11,7 +11,8 @@ public static class Json
     {
         string dir = Path.GetDirectoryName(path);
         if(!Directory.Exists(dir))
-            Directory.CreateDirectory(dir);
+            if (dir != null)
+                Directory.CreateDirectory(dir);
         string json = JsonConvert.SerializeObject(data, Formatting.Indented);
         File.WriteAllText(path, json);
     }
