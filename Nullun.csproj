@@ -19,7 +19,6 @@
     <Content Include="Chart\TestChart\Audio.wav" />
     <Content Include="Chart\TestChart\Audio.wav.import" />
     <Content Include="Chart\TestChart\Chart.json" />
-    <Content Include="Resource\Settings.json" />
     <Content Include="Scenes\ChartInfo.tscn" />
     <Content Include="Scenes\Gameplay.tscn" />
     <Content Include="Scenes\Gameplay\Flick.tscn" />
@@ -32,6 +31,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Assets\" />
+    <Folder Include="Resource\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="NAudio" Version="2.2.1" />
