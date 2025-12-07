@@ -40,4 +40,11 @@ public partial class SongList : NullunObject
            _songListContainer.AddChild(chartInfo);
         }
     }
+
+    public new void Show()
+    {
+        base.Show();
+        var animationPlayer = GetNode<AnimationPlayer>("AnimationPlayer");
+        animationPlayer.Play("init");
+    }
 }

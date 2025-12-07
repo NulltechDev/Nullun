@@ -1,8 +1,45 @@
-[gd_scene load_steps=2 format=3 uid="uid://ds6s8yq3q3njq"]
+[gd_scene load_steps=5 format=3 uid="uid://ds6s8yq3q3njq"]
 
 [ext_resource type="Script" path="res://Scripts/SongList.cs" id="1_70vwv"]
 
+[sub_resource type="Animation" id="Animation_pq68x"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_jhhcm"]
+resource_name = "init"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(-2, -2),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_q04mj"]
+_data = {
+"RESET": SubResource("Animation_pq68x"),
+"init": SubResource("Animation_jhhcm")
+}
+
 [node name="SongList" type="Node2D"]
+modulate = Color(1, 1, 1, 0)
 script = ExtResource("1_70vwv")
 
 [node name="ScrollContainer" type="ScrollContainer" parent="."]
@@ -14,3 +51,8 @@ offset_bottom = 20.0
 
 [node name="VBoxContainer" type="VBoxContainer" parent="ScrollContainer"]
 layout_mode = 2
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_q04mj")
+}
