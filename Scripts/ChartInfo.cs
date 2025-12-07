@@ -46,7 +46,8 @@ public partial class ChartInfo : Control
         var titleLabel = GetNode<Label>("TextureButton/Title");
         titleLabel.Text = Title;
         var texture = GetNode<TextureRect>("TextureButton/TextureRect");
-        texture.Texture = GD.Load<Texture2D>($"{chartDirectory}/Preview.jpeg");
+        if(File.Exists($"{chartDirectory}/Preview.jpeg"))
+            texture.Texture = GD.Load<Texture2D>($"{chartDirectory}/Preview.jpeg");
 
         var difficulty = GetNode<Label>("TextureButton/Difficulty");
         foreach (var chart in charts)
@@ -93,8 +94,11 @@ public partial class ChartInfo : Control
         GetTree().CreateTween().TweenProperty(this, "PosOffset", 100,0.2f).SetTrans(Tween.TransitionType.Sine);
         GetTree().CreateTween().TweenProperty(this, "scale", new Vector2(1.1f,1.1f),0.2f).SetTrans(Tween.TransitionType.Sine);
         _isSelected = true;
-        AudioFileReader audio = new AudioFileReader($"{Chart}/Audio.wav");
-        PlayAudio(audio);
+        if(File.Exists($"{Chart}/Audio.wav"))
+        {
+            AudioFileReader audio = new AudioFileReader($"{Chart}/Audio.wav");
+            PlayAudio(audio);
+        }
     }
 
     public void Deselect()
@@ -107,7 +111,6 @@ public partial class ChartInfo : Control
 
     private void PlayAudio(AudioFileReader audio)
     {
-        
         _output.Init(audio);
         audio.Seek(audio.Length / 2, SeekOrigin.Begin);
         audio.Volume = 0;
