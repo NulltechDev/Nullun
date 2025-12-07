@@ -18,11 +18,14 @@ public partial class Menu : NullunObject
 	public override void _Input(InputEvent @event)
 	{
 		base._Input(@event);
-		var animationPlayer = GetNode<AnimationPlayer>("StartButton/AnimationPlayer");
-		if(animationPlayer.IsPlaying() && !_skipped)
+		if (@event.IsActionType())
 		{
-			animationPlayer.Seek(3.0);
-			_skipped = true;
+			var animationPlayer = GetNode<AnimationPlayer>("StartButton/AnimationPlayer");
+			if (animationPlayer.IsPlaying() && !_skipped)
+			{
+				animationPlayer.Seek(3.0);
+				_skipped = true;
+			}
 		}
 	}
 }
