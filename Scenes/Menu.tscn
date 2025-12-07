@@ -1,4 +1,4 @@
-[gd_scene load_steps=29 format=3 uid="uid://cw732n2i8yjjh"]
+[gd_scene load_steps=25 format=3 uid="uid://cw732n2i8yjjh"]
 
 [ext_resource type="Script" path="res://Scripts/Menu.cs" id="1_h41sj"]
 [ext_resource type="Shader" path="res://Resource/Shader/start_button.gdshader" id="2_a5dha"]
@@ -9,11 +9,8 @@
 [ext_resource type="Shader" path="res://Resource/Shader/glitch.gdshader" id="7_cfvo3"]
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_g4q10"]
-noise_type = 2
-frequency = 0.001
 
 [sub_resource type="NoiseTexture2D" id="NoiseTexture2D_ct0ie"]
-seamless = true
 seamless_blend_skirt = 1.0
 noise = SubResource("FastNoiseLite_g4q10")
 
@@ -22,50 +19,42 @@ shader = ExtResource("3_44qgp")
 shader_parameter/glitch_color = Color(1, 1, 1, 0.0392157)
 shader_parameter/noise_tex = SubResource("NoiseTexture2D_ct0ie")
 
-[sub_resource type="FastNoiseLite" id="FastNoiseLite_x86ul"]
-noise_type = 3
-frequency = 0.02
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_j8bjb"]
 
 [sub_resource type="NoiseTexture2D" id="NoiseTexture2D_wm5xk"]
-width = 1000
-height = 1000
 seamless = true
-seamless_blend_skirt = 1.0
-noise = SubResource("FastNoiseLite_x86ul")
+seamless_blend_skirt = 0.5
+noise = SubResource("FastNoiseLite_j8bjb")
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_iilpm"]
 shader = ExtResource("2_suqpd")
-shader_parameter/time_scale = 0.1
-shader_parameter/speed = 0.6
+shader_parameter/time_scale = 0.2
+shader_parameter/speed = 0.3
 shader_parameter/intensity = 0.0
-shader_parameter/noise_scale = 0.5
-shader_parameter/band_count = 2.0
+shader_parameter/noise_scale = 1.0
+shader_parameter/band_count = 4.0
 shader_parameter/glow_intensity = 0.0
-shader_parameter/distortion_strength = 1.0
+shader_parameter/distortion_strength = 0.0
 shader_parameter/color_wave_speed = 0.2
-shader_parameter/color_wave_frequency = 5.0
-shader_parameter/color_wave_amplitude = 0.0
+shader_parameter/color_wave_frequency = 2.0
+shader_parameter/color_wave_amplitude = 0.3
 shader_parameter/hue_shift_speed = 0.1
-shader_parameter/color_pulse_speed = 8.0
+shader_parameter/color_pulse_speed = 0.5
 shader_parameter/saturation_variation = 0.2
 shader_parameter/color1 = Color(0.1, 0.8, 0.5, 1)
-shader_parameter/color2 = Color(1, 1, 1, 1)
-shader_parameter/color3 = Color(1, 0, 1, 1)
-shader_parameter/glow_color = Color(0, 1, 0.833333, 1)
+shader_parameter/color2 = Color(0.3, 0.2, 0.8, 1)
+shader_parameter/color3 = Color(0.8, 0.3, 0.9, 1)
+shader_parameter/glow_color = Color(0.5, 1, 1, 1)
 shader_parameter/noise_tex = SubResource("NoiseTexture2D_wm5xk")
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_ydyyj"]
 noise_type = 3
+frequency = 0.0175
 
 [sub_resource type="NoiseTexture2D" id="NoiseTexture2D_1p3cy"]
 seamless = true
 seamless_blend_skirt = 1.0
 noise = SubResource("FastNoiseLite_ydyyj")
-
-[sub_resource type="FastNoiseLite" id="FastNoiseLite_j642n"]
-
-[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_gnsas"]
-noise = SubResource("FastNoiseLite_j642n")
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_b1gj5"]
 shader = ExtResource("2_a5dha")
@@ -76,23 +65,12 @@ shader_parameter/dissolve_progress = 0.0
 shader_parameter/edge_position = 0.02
 shader_parameter/edge_width = 0.04
 shader_parameter/noise_tex = SubResource("NoiseTexture2D_1p3cy")
-shader_parameter/noise_tex2 = SubResource("NoiseTexture2D_gnsas")
 
 [sub_resource type="Gradient" id="Gradient_874uq"]
-colors = PackedColorArray(0.9, 1, 0.983333, 1, 1, 0.9, 1, 1)
+colors = PackedColorArray(0.9, 1, 0.983333, 1, 1, 1, 1, 1)
 
 [sub_resource type="GradientTexture2D" id="GradientTexture2D_0yrt5"]
 gradient = SubResource("Gradient_874uq")
-width = 150
-height = 150
-fill = 1
-fill_from = Vector2(0, 1)
-
-[sub_resource type="Gradient" id="Gradient_ha501"]
-colors = PackedColorArray(0.72, 0.9, 0.87, 1, 0.9, 0.72, 0.9, 1)
-
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_eqdjq"]
-gradient = SubResource("Gradient_ha501")
 width = 150
 height = 150
 fill = 1
@@ -151,43 +129,43 @@ tracks/3/keys = {
 tracks/4/type = "value"
 tracks/4/imported = false
 tracks/4/enabled = true
-tracks/4/path = NodePath("Nullun:visible")
+tracks/4/path = NodePath("SettingButton:disabled")
 tracks/4/interp = 1
 tracks/4/loop_wrap = true
 tracks/4/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [true]
+"values": [false]
 }
 tracks/5/type = "value"
 tracks/5/imported = false
 tracks/5/enabled = true
-tracks/5/path = NodePath("SettingButton:disabled")
+tracks/5/path = NodePath("SettingButton:modulate")
 tracks/5/interp = 1
 tracks/5/loop_wrap = true
 tracks/5/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [false]
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
 }
 tracks/6/type = "value"
 tracks/6/imported = false
 tracks/6/enabled = true
-tracks/6/path = NodePath("SettingButton:modulate")
+tracks/6/path = NodePath(".:material:shader_parameter/dissolve_progress")
 tracks/6/interp = 1
 tracks/6/loop_wrap = true
 tracks/6/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Color(1, 1, 1, 0)]
+"values": [0.0]
 }
 tracks/7/type = "value"
 tracks/7/imported = false
 tracks/7/enabled = true
-tracks/7/path = NodePath(".:material:shader_parameter/dissolve_progress")
+tracks/7/path = NodePath("../Aurora:material:shader_parameter/intensity")
 tracks/7/interp = 1
 tracks/7/loop_wrap = true
 tracks/7/keys = {
@@ -199,7 +177,7 @@ tracks/7/keys = {
 tracks/8/type = "value"
 tracks/8/imported = false
 tracks/8/enabled = true
-tracks/8/path = NodePath("../Aurora:material:shader_parameter/intensity")
+tracks/8/path = NodePath("../Aurora:material:shader_parameter/glow_intensity")
 tracks/8/interp = 1
 tracks/8/loop_wrap = true
 tracks/8/keys = {
@@ -211,22 +189,10 @@ tracks/8/keys = {
 tracks/9/type = "value"
 tracks/9/imported = false
 tracks/9/enabled = true
-tracks/9/path = NodePath("../Aurora:material:shader_parameter/glow_intensity")
+tracks/9/path = NodePath("..:modulate")
 tracks/9/interp = 1
 tracks/9/loop_wrap = true
 tracks/9/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [0.0]
-}
-tracks/10/type = "value"
-tracks/10/imported = false
-tracks/10/enabled = true
-tracks/10/path = NodePath("..:modulate")
-tracks/10/interp = 1
-tracks/10/loop_wrap = true
-tracks/10/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
@@ -279,10 +245,10 @@ tracks/3/path = NodePath("Nullun:modulate")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/keys = {
-"times": PackedFloat32Array(0, 1, 1.5, 3, 4),
-"transitions": PackedFloat32Array(-2, -2, -2, -2, 1),
+"times": PackedFloat32Array(0, 1, 1.5, 3),
+"transitions": PackedFloat32Array(-2, -2, -2, -2),
 "update": 0,
-"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 0), Color(1, 1, 1, 1), Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 0), Color(1, 1, 1, 1), Color(1, 1, 1, 1)]
 }
 tracks/4/type = "method"
 tracks/4/imported = false
@@ -317,7 +283,7 @@ tracks/6/path = NodePath("SettingButton:modulate")
 tracks/6/interp = 1
 tracks/6/loop_wrap = true
 tracks/6/keys = {
-"times": PackedFloat32Array(0, 3, 4),
+"times": PackedFloat32Array(0, 1.6, 4),
 "transitions": PackedFloat32Array(1, -2, -2),
 "update": 0,
 "values": [Color(1, 1, 1, 0), Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
@@ -398,25 +364,13 @@ tracks/2/keys = {
 "update": 0,
 "values": [1.0, 1.0, 0.0]
 }
-tracks/3/type = "value"
+tracks/3/type = "method"
 tracks/3/imported = false
 tracks/3/enabled = true
-tracks/3/path = NodePath("Nullun:visible")
+tracks/3/path = NodePath("..")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [false]
-}
-tracks/4/type = "method"
-tracks/4/imported = false
-tracks/4/enabled = true
-tracks/4/path = NodePath("..")
-tracks/4/interp = 1
-tracks/4/loop_wrap = true
-tracks/4/keys = {
 "times": PackedFloat32Array(2),
 "transitions": PackedFloat32Array(1),
 "values": [{
@@ -424,53 +378,65 @@ tracks/4/keys = {
 "method": &"StartButtonOnPressed"
 }]
 }
-tracks/5/type = "value"
-tracks/5/imported = false
-tracks/5/enabled = true
-tracks/5/path = NodePath("SettingButton:modulate")
-tracks/5/interp = 1
-tracks/5/loop_wrap = true
-tracks/5/keys = {
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("SettingButton:modulate")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
 "times": PackedFloat32Array(0, 0.533333),
 "transitions": PackedFloat32Array(-2, -2),
 "update": 0,
 "values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
 }
-tracks/6/type = "value"
-tracks/6/imported = false
-tracks/6/enabled = true
-tracks/6/path = NodePath(".:material:shader_parameter/dissolve_progress")
-tracks/6/interp = 1
-tracks/6/loop_wrap = true
-tracks/6/keys = {
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath(".:material:shader_parameter/dissolve_progress")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
 "times": PackedFloat32Array(0, 0.8),
 "transitions": PackedFloat32Array(-2, -2),
 "update": 0,
 "values": [0.0, 2.0]
 }
-tracks/7/type = "value"
-tracks/7/imported = false
-tracks/7/enabled = true
-tracks/7/path = NodePath("../Aurora:material:shader_parameter/intensity")
-tracks/7/interp = 1
-tracks/7/loop_wrap = true
-tracks/7/keys = {
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("../Aurora:material:shader_parameter/intensity")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
 "times": PackedFloat32Array(0, 1.8),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
 "values": [0.5, 0.0]
 }
-tracks/8/type = "value"
-tracks/8/imported = false
-tracks/8/enabled = true
-tracks/8/path = NodePath("..:modulate")
-tracks/8/interp = 1
-tracks/8/loop_wrap = true
-tracks/8/keys = {
+tracks/7/type = "value"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("..:modulate")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = {
 "times": PackedFloat32Array(0, 1.2, 1.8),
 "transitions": PackedFloat32Array(-2, -2, -2),
 "update": 0,
 "values": [Color(1, 1, 1, 1), Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+tracks/8/type = "value"
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/path = NodePath("Nullun:modulate")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/keys = {
+"times": PackedFloat32Array(0, 1.2),
+"transitions": PackedFloat32Array(-2, -2),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_1tt7o"]
@@ -489,11 +455,11 @@ shadow_offset = Vector2(2, 0)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_e6cuk"]
 shader = ExtResource("7_cfvo3")
-shader_parameter/shake_power = 0.005
+shader_parameter/shake_power = 0.001
 shader_parameter/shake_rate = 0.2
 shader_parameter/shake_speed = 5.0
-shader_parameter/shake_block_size = 30.5
-shader_parameter/shake_color_rate = 0.001
+shader_parameter/shake_block_size = 10.0
+shader_parameter/shake_color_rate = 0.0
 
 [node name="Menu" type="Node2D"]
 modulate = Color(1, 1, 1, 0)
@@ -506,25 +472,26 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -3000.0
-offset_top = -2000.0
-offset_right = 3000.0
-offset_bottom = 2000.0
+offset_left = -2000.0
+offset_top = -1500.0
+offset_right = 2000.0
+offset_bottom = 1500.0
 grow_horizontal = 2
 grow_vertical = 2
 scale = Vector2(1, 0.99152)
 
 [node name="Aurora" type="ColorRect" parent="."]
+modulate = Color(1, 1, 1, 0.196078)
 material = SubResource("ShaderMaterial_iilpm")
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -3000.0
-offset_top = -2000.0
-offset_right = 3000.0
-offset_bottom = 2000.0
+offset_left = -2000.0
+offset_top = -1500.0
+offset_right = 2000.0
+offset_bottom = 1500.0
 grow_horizontal = 2
 grow_vertical = 2
 
@@ -542,7 +509,6 @@ offset_bottom = 75.0
 grow_horizontal = 2
 grow_vertical = 2
 texture_normal = SubResource("GradientTexture2D_0yrt5")
-texture_pressed = SubResource("GradientTexture2D_eqdjq")
 script = ExtResource("3_caxpl")
 
 [node name="SettingButton" type="TextureButton" parent="StartButton"]

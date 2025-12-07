@@ -2,6 +2,7 @@ extends TextureButton
 
 func _ready() -> void:
 	disabled = true
+	$SettingButton.disabled = true
 	$AnimationPlayer.play("start_button_init")
 
 func _on_pressed() -> void:
@@ -9,3 +10,4 @@ func _on_pressed() -> void:
 
 func active():
 	disabled = false
+	$SettingButton.disabled = false

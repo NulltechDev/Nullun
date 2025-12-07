@@ -303,5 +303,6 @@ void fragment() {
     
     // 输出
     float alpha = aurora * 0.8 + glow * 0.2;
-    COLOR = vec4(final_color, alpha);
+    COLOR.rgb = vec4(final_color, alpha).rgb;
+	COLOR.a *= alpha;
 }
