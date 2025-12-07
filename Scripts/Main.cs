@@ -15,7 +15,6 @@ public partial class Main : NullunObject
 		base.InitContent();
 		_background.Size = GetWindow().Size;
 		_menu.Position = GetWindow().Size / 2;
-		_songList.Position = GetWindow().Size / 2;
 		Clear();
 		_menu.Show();
 	}

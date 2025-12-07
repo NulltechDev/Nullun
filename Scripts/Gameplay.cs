@@ -60,17 +60,12 @@ public partial class Gameplay : NullunObject
 		_flickScene = (PackedScene)GD.Load("res://Scenes/Gameplay/Flick.tscn");
 		if(_flickScene == null) throw new Exception("Could not find Flick Scene");
 	}
+	
 
-	public override void _Ready()
-	{
-		base._Ready();
-		Start();
-	}
-
-	private void Start()
+	public void Start(string chart)
 	{
 		_track.Position = GetWindow().Size / 2;
-		if (!LoadChart("TestChart", 0)) return;
+		if (!LoadChart(chart, 0)) return;
 		Play();
 		if(Timer == null) throw new Exception("Initial failed: Could not find Timer");
 	}
@@ -91,7 +86,7 @@ public partial class Gameplay : NullunObject
 
 	private bool LoadChart(string filename,int level)
 	{
-		ChartData data = Json.Load<ChartData>($"Chart/{filename}/Chart.json");
+		ChartData data = Json.Load<ChartData>($"{filename}/Chart.json");
 		MetaData meta = data.Meta;
 		ChartItem chart = null;
 		foreach (var c in data.Chart)
@@ -100,7 +95,7 @@ public partial class Gameplay : NullunObject
 		if (chart == null) throw new Exception("Chart not found");
 		TotalTime = PreStart + meta.TotalTime;
 		InitTrack();
-		AudioFileReader audio = new AudioFileReader($"Chart/{filename}/Audio.wav");
+		AudioFileReader audio = new AudioFileReader($"{filename}/Audio.wav");
 		InitBpm(meta);
 		InitAudio(audio);
 		try

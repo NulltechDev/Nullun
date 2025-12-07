@@ -13,6 +13,9 @@
     <EmbeddedResource Remove="Scripts\Chart\**" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Chart\TestChart2\Audio.wav" />
+    <Content Include="Chart\TestChart2\Audio.wav.import" />
+    <Content Include="Chart\TestChart2\Chart.json" />
     <Content Include="Chart\TestChart\Audio.wav" />
     <Content Include="Chart\TestChart\Audio.wav.import" />
     <Content Include="Chart\TestChart\Chart.json" />

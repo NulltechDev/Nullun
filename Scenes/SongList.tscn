@@ -4,3 +4,13 @@
 
 [node name="SongList" type="Node2D"]
 script = ExtResource("1_70vwv")
+
+[node name="ScrollContainer" type="ScrollContainer" parent="."]
+clip_contents = false
+offset_left = 20.0
+offset_top = 20.0
+offset_right = 1220.0
+offset_bottom = 20.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="ScrollContainer"]
+layout_mode = 2
