@@ -7,29 +7,6 @@
     <LangVersion>12</LangVersion>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Remove="Scripts\Chart\**" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Remove="Scripts\Chart\**" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Chart\TestChart2\Audio.wav" />
-    <Content Include="Chart\TestChart2\Audio.wav.import" />
-    <Content Include="Chart\TestChart2\Chart.json" />
-    <Content Include="Chart\TestChart\Audio.wav" />
-    <Content Include="Chart\TestChart\Audio.wav.import" />
-    <Content Include="Chart\TestChart\Chart.json" />
-    <Content Include="Scenes\ChartInfo.tscn" />
-    <Content Include="Scenes\Gameplay.tscn" />
-    <Content Include="Scenes\Gameplay\Flick.tscn" />
-    <Content Include="Scenes\Gameplay\Glide.tscn" />
-    <Content Include="Scenes\Gameplay\Hold.tscn" />
-    <Content Include="Scenes\Gameplay\Note.tscn" />
-    <Content Include="Scenes\Main.tscn" />
-    <Content Include="Scenes\Menu.tscn" />
-    <Content Include="Scenes\SongList.tscn" />
-  </ItemGroup>
-  <ItemGroup>
     <Folder Include="Assets\" />
     <Folder Include="Resource\" />
   </ItemGroup>

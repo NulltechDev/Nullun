@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading.Tasks;
 using Godot;
+using Nullun.Scripts.Utils;
 
 namespace Nullun.Scripts;
 
@@ -25,7 +27,18 @@ public partial class SongList : NullunObject
         base.InitContent();
         _songListScrollContainer.Size = GetWindow().Size - new Vector2(0, 80);
         _songListScrollContainer.Position = new Vector2(40, 40);
-        string chartDirectory = "Chart/";
+    }
+
+    public new void Show()
+    {
+        base.Show();
+        var animationPlayer = GetNode<AnimationPlayer>("AnimationPlayer");
+        animationPlayer.Play("init");
+    }
+
+    public void LoadSongList()
+    {
+        string chartDirectory = ProjectSettings.GlobalizePath("user://Chart/");
         string[] chartFile = Directory.GetDirectories(chartDirectory);
         _songList.Clear();
         foreach (string file in chartFile)
@@ -38,14 +51,7 @@ public partial class SongList : NullunObject
 
         foreach (ChartInfo chartInfo in _songList)
         {
-           _songListContainer.AddChild(chartInfo);
+            _songListContainer.AddChild(chartInfo);
         }
-    }
-
-    public new void Show()
-    {
-        base.Show();
-        var animationPlayer = GetNode<AnimationPlayer>("AnimationPlayer");
-        animationPlayer.Play("init");
     }
 }
