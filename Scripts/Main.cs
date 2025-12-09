@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading.Tasks;
 using Godot;
+using Nullun.Scripts.Data;
 using Nullun.Scripts.Utils;
 using FileAccess = Godot.FileAccess;
 using Json = Nullun.Scripts.Utils.Json;
@@ -19,6 +21,7 @@ public partial class Main : NullunObject
 	{
 		base.InitContent();
 		_background.Size = GetWindow().Size;
+		Settings.Instance.Init();
 		Clear();
 		Download();
 	}
@@ -51,7 +54,7 @@ public partial class Main : NullunObject
 	private async void Download()
 	{
 		_download.Show();
-		await ChartDownloader.DownloadAndExtractAsync("TestChart");
+		// await ChartDownloader.DownloadAndExtractAsync("TestChart");
 		Clear();
 		_menu = GD.Load<PackedScene>("res://Scenes/Menu.tscn").Instantiate<Menu>();
 		_songList = GD.Load<PackedScene>("res://Scenes/SongList.tscn").Instantiate<SongList>();

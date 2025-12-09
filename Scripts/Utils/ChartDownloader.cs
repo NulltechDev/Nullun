@@ -10,13 +10,17 @@ namespace Nullun.Scripts.Utils;
 
 public static class ChartDownloader
 {
-    private static readonly HttpClient http = new HttpClient(new HttpClientHandler()
+    private static readonly HttpClient http = new(new HttpClientHandler()
     {
-        ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => true
+        ServerCertificateCustomValidationCallback = (_, _, _, _) => true,
+        CheckCertificateRevocationList = false,
+        SslProtocols = System.Security.Authentication.SslProtocols.Tls12 | System.Security.Authentication.SslProtocols.Tls13
     });
 
+    
+    
     [Export]
-    public static string ServerBaseUrl { get; set; } = "https://frp-bus.com:29128";
+    public static string ServerBaseUrl { get; set; } = "https://localhost:7107";
 
     // 将 zip 解压到 user://Chart/{folderName}
     public static async Task<bool> DownloadAndExtractAsync(string folderName)
@@ -55,11 +59,14 @@ public static class ChartDownloader
             var extractDir = Path.Combine(userChartAbs, folderName);
             if (Directory.Exists(extractDir))
                 Directory.Delete(extractDir, true);
-
-            ZipFile.ExtractToDirectory(zipPath, extractDir);
+            await Task.Run((() =>
+            {
+                ZipFile.ExtractToDirectory(zipPath, extractDir);
+            }));
+            
             GD.Print($"Extracted to {extractDir}");
-
-            // 可选：删除 zip 文件
+            
+            // // 可选：删除 zip 文件
             try { File.Delete(zipPath); } catch { /* ignore */ }
 
             return true;

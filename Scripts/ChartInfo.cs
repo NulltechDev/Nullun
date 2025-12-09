@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Godot;
 using NAudio.Wave;
 using Nullun.Scripts.Data;
+using FileAccess = Godot.FileAccess;
 using Json = Nullun.Scripts.Utils.Json;
 
 namespace Nullun.Scripts;
@@ -46,8 +47,15 @@ public partial class ChartInfo : Control
         var titleLabel = GetNode<Label>("TextureButton/Title");
         titleLabel.Text = Title;
         var texture = GetNode<TextureRect>("TextureButton/TextureRect");
-        if(File.Exists($"{chartDirectory}/Preview.jpeg"))
-            texture.Texture = GD.Load<Texture2D>($"{chartDirectory}/Preview.jpeg");
+        if(FileAccess.FileExists($"{chartDirectory}/Preview.jpg"))
+        {
+            var file = FileAccess.Open($"{chartDirectory}/Preview.jpg", FileAccess.ModeFlags.Read);
+            var image = new Image();
+            var buffer = file.GetBuffer((long)file.GetLength());
+            var loadResult = image.LoadJpgFromBuffer(buffer);
+            if(loadResult == Error.Ok)
+                texture.Texture = ImageTexture.CreateFromImage(image);
+        }
 
         var difficulty = GetNode<Label>("TextureButton/Difficulty");
         foreach (var chart in charts)
