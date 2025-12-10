@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 using Godot;
 
 namespace Nullun.Scripts;
@@ -27,5 +28,20 @@ public partial class Menu : NullunObject
 				_skipped = true;
 			}
 		}
+	}
+
+	protected override void InitContent()
+	{
+		base.InitContent();
+		var audio = GetNode<AudioStreamPlayer>("AudioStreamPlayer");
+		audio.Play();
+		var button = GetNode<TextureButton>("StartButton");
+		button.Pressed += async () =>
+		{
+			GetTree().CreateTween().TweenProperty(audio, "volume_db", -80, 4f);
+			while(audio.GetVolumeDb() > -80)
+				await Task.Delay(10);
+			audio.Stop();
+		};
 	}
 }
