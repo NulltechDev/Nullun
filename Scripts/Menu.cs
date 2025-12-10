@@ -21,7 +21,7 @@ public partial class Menu : NullunObject
 		if (@event.IsActionType())
 		{
 			var animationPlayer = GetNode<AnimationPlayer>("StartButton/AnimationPlayer");
-			if (animationPlayer.IsPlaying() && !_skipped && animationPlayer.CurrentAnimationPosition > 1)
+			if (animationPlayer.IsPlaying() && !_skipped && animationPlayer.CurrentAnimationPosition is > 2 and < 3)
 			{
 				animationPlayer.Seek(3.0);
 				_skipped = true;
