@@ -99,8 +99,9 @@ public partial class ChartInfo : Control
 
     public void Select()
     {
-        GetTree().CreateTween().TweenProperty(this, "PosOffset", 100,0.2f).SetTrans(Tween.TransitionType.Sine);
-        GetTree().CreateTween().TweenProperty(this, "scale", new Vector2(1.1f,1.1f),0.2f).SetTrans(Tween.TransitionType.Sine);
+        var t = GetTree().CreateTween();
+        t.TweenProperty(this, "PosOffset", 100,0.2f).SetTrans(Tween.TransitionType.Sine);
+        t.TweenProperty(this, "scale", new Vector2(1.01f,1.01f),0.3f).SetTrans(Tween.TransitionType.Sine);
         _isSelected = true;
         if(File.Exists($"{Chart}/Audio.wav"))
         {

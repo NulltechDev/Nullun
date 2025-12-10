@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=3 uid="uid://cw732n2i8yjjh"]
+[gd_scene load_steps=28 format=3 uid="uid://cw732n2i8yjjh"]
 
 [ext_resource type="Script" path="res://Scripts/Menu.cs" id="1_h41sj"]
 [ext_resource type="Shader" path="res://Resource/Shader/start_button.gdshader" id="2_a5dha"]
@@ -7,6 +7,8 @@
 [ext_resource type="Script" path="res://Scripts/UI/start_button.gd" id="3_caxpl"]
 [ext_resource type="Texture2D" uid="uid://bo0c1k8fxikh3" path="res://Assets/Graphics/cog.svg" id="5_kkb7w"]
 [ext_resource type="Shader" path="res://Resource/Shader/glitch.gdshader" id="7_cfvo3"]
+[ext_resource type="Texture2D" uid="uid://cdberukmo5bij" path="res://Assets/Graphics/Null-gigapixel-scale-2x.png" id="8_5hu4h"]
+[ext_resource type="Shader" path="res://Resource/Shader/negtive_color.gdshader" id="8_c0kxi"]
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_g4q10"]
 
@@ -461,6 +463,9 @@ shader_parameter/shake_speed = 5.0
 shader_parameter/shake_block_size = 10.0
 shader_parameter/shake_color_rate = 0.0
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_rr8bq"]
+shader = ExtResource("8_c0kxi")
+
 [node name="Menu" type="Node2D"]
 modulate = Color(1, 1, 1, 0)
 script = ExtResource("1_h41sj")
@@ -562,5 +567,24 @@ offset_bottom = 2000.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
+
+[node name="TextureRect" type="TextureRect" parent="."]
+material = SubResource("ShaderMaterial_rr8bq")
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -200.0
+offset_top = -750.0
+offset_right = 1300.0
+offset_bottom = 750.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+mouse_filter = 2
+texture = ExtResource("8_5hu4h")
+expand_mode = 1
 
 [connection signal="pressed" from="StartButton" to="StartButton" method="_on_pressed"]

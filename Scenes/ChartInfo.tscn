@@ -1,22 +1,10 @@
-[gd_scene load_steps=9 format=3 uid="uid://blx7ioe3j0fr8"]
+[gd_scene load_steps=11 format=3 uid="uid://blx7ioe3j0fr8"]
 
 [ext_resource type="Script" path="res://Scripts/ChartInfo.cs" id="1_kanq1"]
 [ext_resource type="Texture2D" uid="uid://cfhnh0r4cfjwl" path="res://Assets/Graphics/chart_info.png" id="3_kf0r2"]
 [ext_resource type="FontFile" uid="uid://bjhxvr3lu5u10" path="res://Assets/Fonts/QynFlavorGroteskGB/QynFlavorGroteskGB-Light.ttf" id="4_3g60w"]
 [ext_resource type="Shader" path="res://Resource/Shader/shadow.gdshader" id="4_5xkyd"]
 [ext_resource type="FontFile" uid="uid://k52s5j8wobkt" path="res://Assets/Fonts/QynFlavorGroteskGB/QynFlavorGroteskGB-Regular.ttf" id="4_325b7"]
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_m8so0"]
-shader = ExtResource("4_5xkyd")
-shader_parameter/blur_radius = 5
-shader_parameter/blur_strength = 1.0
-shader_parameter/edge_softness = 1.0
-shader_parameter/corner_fix = 0.5
-shader_parameter/alpha_min = 0.1
-shader_parameter/color = Color(0, 0, 0, 0.0392157)
-shader_parameter/inner_fade_width = 0.2
-shader_parameter/inner_fade_softness = 2.0
-shader_parameter/min_alpha = 0.0
 
 [sub_resource type="LabelSettings" id="LabelSettings_70844"]
 font = ExtResource("4_3g60w")
@@ -29,6 +17,18 @@ font_color = Color(0, 0, 0, 0.588235)
 shadow_size = 5
 shadow_color = Color(0, 0, 0, 0.196078)
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_2jpsv"]
+shader = ExtResource("4_5xkyd")
+shader_parameter/sigma = 3.3
+
+[sub_resource type="Gradient" id="Gradient_ptplm"]
+offsets = PackedFloat32Array(0.322222, 0.603704, 1)
+colors = PackedColorArray(1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_h4ysq"]
+gradient = SubResource("Gradient_ptplm")
+height = 40
+
 [node name="ChartInfo" type="Control"]
 clip_contents = true
 custom_minimum_size = Vector2(1000, 120)
@@ -38,19 +38,9 @@ offset_right = 1000.0
 offset_bottom = 150.0
 script = ExtResource("1_kanq1")
 
-[node name="TextureRect" type="TextureRect" parent="."]
-material = SubResource("ShaderMaterial_m8so0")
-layout_mode = 0
-offset_left = 5.0
-offset_top = 5.0
-offset_right = 1029.0
-offset_bottom = 145.0
-scale = Vector2(0.75, 0.75)
-texture = ExtResource("3_kf0r2")
-
 [node name="TextureButton" type="TextureButton" parent="."]
 clip_children = 2
-layout_mode = 2
+layout_mode = 0
 offset_right = 1024.0
 offset_bottom = 128.0
 scale = Vector2(0.75, 0.75)
@@ -102,3 +92,12 @@ offset_bottom = 38.5
 grow_vertical = 2
 text = "error"
 label_settings = SubResource("LabelSettings_8m4fh")
+
+[node name="TextureRect" type="TextureRect" parent="."]
+material = SubResource("ShaderMaterial_2jpsv")
+layout_mode = 0
+offset_top = 96.0
+offset_right = 698.0
+offset_bottom = 136.0
+mouse_filter = 2
+texture = SubResource("GradientTexture2D_h4ysq")
