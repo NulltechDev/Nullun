@@ -8,8 +8,8 @@ namespace Nullun.Scripts;
 
 public partial class Track : NullunObject
 {
-    public int TrackWidth => 50;
-    public int TrackHeight => 500;
+    public int TrackWidth => 100;
+    public int TrackHeight => 800;
 
     public Rect2[] TrackRects =>
     [

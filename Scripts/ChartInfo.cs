@@ -68,7 +68,7 @@ public partial class ChartInfo : Control
         base._Ready();
         var button = GetNode<TextureButton>("TextureButton");
         button.Pressed += ButtonOnPressed;
-        button.FocusExited += ButtonOnFocusExited;
+        // button.FocusExited += ButtonOnFocusExited;
         PivotOffset = Size / 2;
     }
 
@@ -78,18 +78,19 @@ public partial class ChartInfo : Control
         Position = new Vector2(150 - (float)Math.Sin(GetGlobalPosition().Y / GetWindow().Size.Y * Math.PI) * 150 + PosOffset, Position.Y);
     }
 
-    private void ButtonOnFocusExited()
-    {
-        Deselect();
-    }
+    // private void ButtonOnFocusExited()
+    // {
+    //     Deselect();
+    // }
 
     private void ButtonOnPressed()
     {
         if (!_isSelected) Select();
         else
         {
+            GetTree().GetRoot().GetNode<SongList>("Main/SongList").Stop();
             var scene = GD.Load<PackedScene>("res://Scenes/Gameplay.tscn");
-            if (Chart == null) throw new Exception("Chart not found chart");
+            if (Chart == null) throw new Exception("Chart not found");
             var gameplay = scene.Instantiate<Gameplay>();
             GetTree().GetRoot().GetNode<SongList>("Main/SongList").Hide();
             GetTree().GetRoot().GetNode<Main>("Main").AddChild(gameplay);
@@ -99,52 +100,69 @@ public partial class ChartInfo : Control
 
     public void Select()
     {
-        var t = GetTree().CreateTween();
+        var list = GetTree().GetRoot().GetNode<SongList>("Main/SongList")
+            .GetNode<VBoxContainer>("ScrollContainer/VBoxContainer").GetChildren();
+        foreach (var node in list)
+        {
+            var child = (ChartInfo)node;
+            if (child!=this)
+            {
+                child.Deselect();
+            }
+        }
+        var t = CreateTween();
         t.TweenProperty(this, "PosOffset", 100,0.2f).SetTrans(Tween.TransitionType.Sine);
         t.TweenProperty(this, "scale", new Vector2(1.01f,1.01f),0.3f).SetTrans(Tween.TransitionType.Sine);
         _isSelected = true;
-        if(File.Exists($"{Chart}/Audio.wav"))
-        {
-            AudioFileReader audio = new AudioFileReader($"{Chart}/Audio.wav");
-            PlayAudio(audio);
-        }
+        // if(File.Exists($"{Chart}/Audio.wav"))
+        // {
+        //     AudioFileReader audio = new AudioFileReader($"{Chart}/Audio.wav");
+        //     PlayAudio(audio);
+        // }
+
+        GetTree().GetRoot().GetNode<SongList>("Main/SongList").Load(Chart);
     }
 
     public void Deselect()
     {
-        GetTree().CreateTween().TweenProperty(this, "PosOffset", 0,0.4f).SetTrans(Tween.TransitionType.Cubic);
-        GetTree().CreateTween().TweenProperty(this, "scale", Vector2.One,0.4f).SetTrans(Tween.TransitionType.Cubic);
+        CreateTween().TweenProperty(this, "PosOffset", 0,0.4f).SetTrans(Tween.TransitionType.Cubic);
+        CreateTween().TweenProperty(this, "scale", Vector2.One,0.4f).SetTrans(Tween.TransitionType.Cubic);
         _isSelected = false;
         _output.Stop();
     }
 
-    private void PlayAudio(AudioFileReader audio)
+    public string GetChartName()
     {
-        _output.Init(audio);
-        audio.Seek(audio.Length / 2, SeekOrigin.Begin);
-        audio.Volume = 0;
-        Task.Run(async () =>
-        {
-            // 1. 降低步长+延长单次延迟，减少CPU占用，让音量变化更线性
-            // 总渐入时长≈1.0/0.0002 * 5 = 25秒（可按需求调整step/delay）
-            float step = 0.002f; 
-            int delayMs = 5;      
-
-            // 2. 加锁+浮点上限限制，避免音量超1.0和线程冲突
-            while (true)
-            {
-                lock (audio) // 锁定audio，避免Volume多线程读写冲突
-                {
-                    if (audio.Volume >= 1.0f)
-                    {
-                        audio.Volume = 1.0f; // 强制封顶，避免失真
-                        break;
-                    }
-                    audio.Volume += step;
-                }
-                await Task.Delay(delayMs); // 异步延迟，不阻塞线程
-            }
-        });
-        _output.Play();
+        return Title;
     }
+
+    // private void PlayAudio(AudioFileReader audio)
+    // {
+    //     _output.Init(audio);
+    //     audio.Seek(audio.Length / 2, SeekOrigin.Begin);
+    //     audio.Volume = 0;
+    //     Task.Run(async () =>
+    //     {
+    //         // 1. 降低步长+延长单次延迟，减少CPU占用，让音量变化更线性
+    //         // 总渐入时长≈1.0/0.0002 * 5 = 25秒（可按需求调整step/delay）
+    //         float step = 0.002f; 
+    //         int delayMs = 5;      
+    //
+    //         // 2. 加锁+浮点上限限制，避免音量超1.0和线程冲突
+    //         while (true)
+    //         {
+    //             lock (audio) // 锁定audio，避免Volume多线程读写冲突
+    //             {
+    //                 if (audio.Volume >= 1.0f)
+    //                 {
+    //                     audio.Volume = 1.0f; // 强制封顶，避免失真
+    //                     break;
+    //                 }
+    //                 audio.Volume += step;
+    //             }
+    //             await Task.Delay(delayMs); // 异步延迟，不阻塞线程
+    //         }
+    //     });
+    //     _output.Play();
+    // }
 }

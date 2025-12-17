@@ -15,11 +15,7 @@ public class Settings
     public float Speed { get; set; }
     public float Offset { get; set; }
     public float PreStart { get; set; }
-
-    public Settings()
-    {
-        Path = ProjectSettings.GlobalizePath("user://Settings.json");
-    }
+    
     
     public static Settings Instance
     {
@@ -28,6 +24,7 @@ public class Settings
             // 改动1：先检查缓存的单例，不存在才加载/创建
             if (_instance == null)
             {
+                Path = ProjectSettings.GlobalizePath("user://Settings.json");
                 // 改动2：替换System.IO.File为Godot的FileAccess，兼容安卓
                 if (!FileAccess.FileExists(Path))
                 {
@@ -38,13 +35,14 @@ public class Settings
                         PreStart = 4
                     };
                     Json.Export(Path, _instance);
+                    Console.WriteLine($"Initialized Settings: {Path}");
                 }
                 else
                 {
                     _instance = Json.Load<Settings>(Path);
                 }
+                Console.WriteLine($"Loaded Settings: {Path}");
             }
-            Console.WriteLine(Path);
             return _instance;
         }
     }

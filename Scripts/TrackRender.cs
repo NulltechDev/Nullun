@@ -51,6 +51,7 @@ public partial class TrackRender : NullunObject
     public override void _Draw()
     {
         base._Draw();
+        
         DrawGrid(TotalTime);
         DrawTrack();
         RenderItems();

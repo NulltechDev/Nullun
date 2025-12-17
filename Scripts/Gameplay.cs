@@ -29,8 +29,8 @@ public partial class Gameplay : NullunObject
 	private PackedScene _holdScene;
 	private PackedScene _glideScene;
 	private PackedScene _flickScene;
-	
-	private float DeltaPerTicks {get; set;}
+
+	private float DeltaPerTicks { get; set; }
 	private List<BpmChange> BpmChanges { get; set; } = [];
 	private Stopwatch Timer { get; set; }
 	private float Progress { get; set; }
@@ -60,7 +60,14 @@ public partial class Gameplay : NullunObject
 		_flickScene = (PackedScene)GD.Load("res://Scenes/Gameplay/Flick.tscn");
 		if(_flickScene == null) throw new Exception("Could not find Flick Scene");
 	}
-	
+
+	protected override void InitContent()
+	{
+		base.InitContent();
+		//TEST
+		Start(ProjectSettings.GlobalizePath("user://Chart/TestChart"));
+	}
+
 
 	public void Start(string chart)
 	{
