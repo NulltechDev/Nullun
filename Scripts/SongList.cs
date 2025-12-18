@@ -21,6 +21,7 @@ public partial class SongList : NullunObject
     private Node2D _background2;
     private TextureRect _background2Texture;
     private Sprite2D _background2Sprite;
+    private Sprite2D _songBackgroundSprite;
     
     private string Path { get; set; }
 
@@ -36,6 +37,7 @@ public partial class SongList : NullunObject
         _background2 =  GetNode<Node2D>("Background2");
         _background2Texture = GetNode<TextureRect>("Background2/Background/TextureRect");
         _background2Sprite = GetNode<Sprite2D>("Background2/Background");
+        _songBackgroundSprite = GetNode<Sprite2D>("SongBackground");
     }
 
     protected override void InitContent()
@@ -48,6 +50,8 @@ public partial class SongList : NullunObject
         _background.Position = new Vector2(GetWindow().Size.X * 0.9f, GetWindow().Size.Y / 2f);
         _background2.Scale = new Vector2(GetWindow().Size.Y,GetWindow().Size.Y) / new Vector2(2048f, 2048f) * new Vector2(1.2f,1.2f);
         _background2.Position = new Vector2(GetWindow().Size.X * 0.9f, GetWindow().Size.Y / 2f);
+        _songBackgroundSprite.Position = new Vector2(GetWindow().Size.X * 0.9f, GetWindow().Size.Y / 2f);
+        _songBackgroundSprite.Scale = new Vector2(GetWindow().Size.Y,GetWindow().Size.Y) / new Vector2(2048f, 2048f) * new Vector2(1.4f,1.4f);
     }
 
     public new void Show()
@@ -89,14 +93,17 @@ public partial class SongList : NullunObject
             _songListContainer.AddChild(chartInfo);
         }
     }
-
+    
+    public bool SwitchFlag = false;
+    
     public void Load(string path)
     {
         Stop();
         _background2Texture.Texture = _backgroundTexture.Texture;
         _background2Sprite.Position = Vector2.Zero;
         _background2.Rotation = _background.Rotation;
-        GetTree().CreateTween().TweenProperty(_background2Sprite, "global_position", new Vector2(GetWindow().Size.X, -GetWindow().Size.Y * 2), 1f)
+        GetTree().CreateTween().TweenProperty(_background2Sprite, "global_position",
+                new Vector2(GetWindow().Size.X, -GetWindow().Size.Y * 2), 0.5f)
             .SetTrans(Tween.TransitionType.Sine);
         Path = path;
         SwitchIn();
@@ -104,8 +111,11 @@ public partial class SongList : NullunObject
 
     private void SwitchIn()
     {
+        SwitchFlag = true;
         _backgroundSprite.Position = new Vector2(0, GetWindow().Size.Y * 2);
         _background.Rotation = 0;
+        const float duration = 0.8f;
+        const float delay = 0.4f;
         if(FileAccess.FileExists($"{Path}/Background.jpg"))
         {
             var file = FileAccess.Open($"{Path}/Background.jpg", FileAccess.ModeFlags.Read);
@@ -117,14 +127,15 @@ public partial class SongList : NullunObject
                 _backgroundTexture.Texture = ImageTexture.CreateFromImage(image);
             }
         }
-        GetTree().CreateTween().TweenProperty(_backgroundSprite, "position", Vector2.Zero, 1f)
-            .SetTrans(Tween.TransitionType.Sine);
+        GetTree().CreateTween().TweenProperty(_backgroundSprite, "position", Vector2.Zero, duration)
+            .SetTrans(Tween.TransitionType.Spring);
         Task.Run(async () =>
         {
             while(_backgroundSprite.Position.Y > 0)
                 await Task.Delay(10);
-            await Task.Delay(2000);
+            await Task.Delay((int)((duration + delay) * 1000));
             Play();
+            SwitchFlag = false;
         });
     }
 

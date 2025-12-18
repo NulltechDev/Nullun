@@ -100,6 +100,8 @@ public partial class ChartInfo : Control
 
     public void Select()
     {
+        var songList = GetTree().GetRoot().GetNode<SongList>("Main/SongList");
+        if (songList.SwitchFlag) return;
         var list = GetTree().GetRoot().GetNode<SongList>("Main/SongList")
             .GetNode<VBoxContainer>("ScrollContainer/VBoxContainer").GetChildren();
         foreach (var node in list)
@@ -119,8 +121,7 @@ public partial class ChartInfo : Control
         //     AudioFileReader audio = new AudioFileReader($"{Chart}/Audio.wav");
         //     PlayAudio(audio);
         // }
-
-        GetTree().GetRoot().GetNode<SongList>("Main/SongList").Load(Chart);
+        songList.Load(Chart);
     }
 
     public void Deselect()

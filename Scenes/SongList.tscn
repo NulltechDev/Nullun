@@ -1,7 +1,8 @@
-[gd_scene load_steps=6 format=3 uid="uid://ds6s8yq3q3njq"]
+[gd_scene load_steps=7 format=3 uid="uid://ds6s8yq3q3njq"]
 
 [ext_resource type="Script" path="res://Scripts/SongList.cs" id="1_70vwv"]
-[ext_resource type="Texture2D" uid="uid://chdepk2pe15fl" path="res://Assets/Graphics/background.png" id="2_kpf4i"]
+[ext_resource type="Texture2D" uid="uid://csd65rx7qncnd" path="res://Assets/Graphics/chart_background.png" id="2_0fpud"]
+[ext_resource type="Texture2D" uid="uid://uj5qkfv4674m" path="res://Assets/Graphics/songlist_background.png" id="2_v7dwb"]
 
 [sub_resource type="Animation" id="Animation_pq68x"]
 length = 0.001
@@ -67,12 +68,15 @@ libraries = {
 [node name="VBoxContainer" type="VBoxContainer" parent="ScrollContainer"]
 layout_mode = 2
 
+[node name="SongBackground" type="Sprite2D" parent="."]
+texture = ExtResource("2_v7dwb")
+
 [node name="Background" type="Node2D" parent="."]
 
 [node name="Background" type="Sprite2D" parent="Background"]
 clip_children = 1
 position = Vector2(0, 2000)
-texture = ExtResource("2_kpf4i")
+texture = ExtResource("2_0fpud")
 
 [node name="TextureRect" type="TextureRect" parent="Background/Background"]
 anchors_preset = 8
@@ -92,7 +96,7 @@ expand_mode = 1
 [node name="Background" type="Sprite2D" parent="Background2"]
 clip_children = 1
 position = Vector2(0, 2000)
-texture = ExtResource("2_kpf4i")
+texture = ExtResource("2_0fpud")
 
 [node name="TextureRect" type="TextureRect" parent="Background2/Background"]
 anchors_preset = 8
