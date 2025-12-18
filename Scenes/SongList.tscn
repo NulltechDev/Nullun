@@ -1,8 +1,10 @@
-[gd_scene load_steps=7 format=3 uid="uid://ds6s8yq3q3njq"]
+[gd_scene load_steps=12 format=3 uid="uid://ds6s8yq3q3njq"]
 
 [ext_resource type="Script" path="res://Scripts/SongList.cs" id="1_70vwv"]
 [ext_resource type="Texture2D" uid="uid://csd65rx7qncnd" path="res://Assets/Graphics/chart_background.png" id="2_0fpud"]
 [ext_resource type="Texture2D" uid="uid://uj5qkfv4674m" path="res://Assets/Graphics/songlist_background.png" id="2_v7dwb"]
+[ext_resource type="Script" path="res://Scripts/UI/circle_text.gd" id="3_ukh1p"]
+[ext_resource type="FontFile" uid="uid://5a71hgu63mg7" path="res://Assets/Fonts/BBHBartle-Regular.ttf" id="4_56mge"]
 
 [sub_resource type="Animation" id="Animation_pq68x"]
 length = 0.001
@@ -21,6 +23,7 @@ tracks/0/keys = {
 
 [sub_resource type="Animation" id="Animation_jhhcm"]
 resource_name = "init"
+length = 0.4
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -28,7 +31,7 @@ tracks/0/path = NodePath(".:modulate")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 1),
+"times": PackedFloat32Array(0, 0.4),
 "transitions": PackedFloat32Array(-2, -2),
 "update": 0,
 "values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
@@ -40,7 +43,7 @@ tracks/1/path = NodePath(".")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(1),
+"times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "values": [{
 "args": [],
@@ -53,6 +56,18 @@ _data = {
 "RESET": SubResource("Animation_pq68x"),
 "init": SubResource("Animation_jhhcm")
 }
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_8eniu"]
+
+[sub_resource type="Curve2D" id="Curve2D_3ny5h"]
+_data = {
+"points": PackedVector2Array(0, -550, 0, -506, -920, 0, -506, 0, -550, 0, 0, -920)
+}
+point_count = 2
+
+[sub_resource type="LabelSettings" id="LabelSettings_eodmb"]
+font = ExtResource("4_56mge")
+font_size = 80
 
 [node name="SongList" type="Node2D"]
 modulate = Color(1, 1, 1, 0)
@@ -69,7 +84,15 @@ libraries = {
 layout_mode = 2
 
 [node name="SongBackground" type="Sprite2D" parent="."]
+material = SubResource("ShaderMaterial_8eniu")
 texture = ExtResource("2_v7dwb")
+
+[node name="CircleText" type="Path2D" parent="SongBackground"]
+rotation = -0.523599
+curve = SubResource("Curve2D_3ny5h")
+script = ExtResource("3_ukh1p")
+text = "PATH TEST"
+label_settings = SubResource("LabelSettings_eodmb")
 
 [node name="Background" type="Node2D" parent="."]
 
