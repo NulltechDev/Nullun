@@ -115,6 +115,7 @@ public partial class SongList : NullunObject
         GetTree().CreateTween().TweenProperty(_background2Sprite, "global_position",
                 new Vector2(GetWindow().Size.X, -GetWindow().Size.Y * 1.5f), 0.5f)
             .SetTrans(Tween.TransitionType.Sine);
+        
         SwitchIn();
     }
 
@@ -158,7 +159,7 @@ public partial class SongList : NullunObject
         }
 
         GetTree().CreateTween().TweenProperty(_circleText, "rotation",
-                60 / 180f * (float)Math.PI - title.Length * 110 / 920f, 0.8f)
+                 45 / 180f * (float)Math.PI - ((LabelSettings)_circleText.Get("label_settings")).Font.GetStringSize(title,HorizontalAlignment.Left,-1F,80).X / 920f, 0.8f)
             .SetTrans(Tween.TransitionType.Sine);
         GetTree().CreateTween().TweenProperty(_circleText, "text",
                 title, 0.4f)
@@ -176,7 +177,7 @@ public partial class SongList : NullunObject
         var audio = AudioStreamOggVorbis.LoadFromFile($"{path}/Preview.ogg");
         audio.Loop = true;
         // var audio = GD.Load<AudioStreamOggVorbis>($"{path}/Audio.ogg");
-        _player = GetNodeOrNull<AudioStreamPlayer>("player");
+        // _player = GetNodeOrNull<AudioStreamPlayer>("player");
         if(_player == null)
         {
             _player = new AudioStreamPlayer();

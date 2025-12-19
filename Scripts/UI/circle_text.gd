@@ -19,7 +19,6 @@ extends Path2D
 		if is_instance_valid(label_settings):
 			label_settings.changed.connect(queue_redraw)
 
-
 var _line = TextLine.new()
 
 
